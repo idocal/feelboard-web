@@ -1,0 +1,30 @@
+.profile-panel {
+    color: #fff;
+}
+
+.profile-pic-frame {
+    width: 170px;
+    height: 170px;
+    border: 2px dashed #fff;
+    border-radius: 50%;
+    margin-top: 100px;
+}
+
+.profile-pic {
+    width: 140px;
+    height: 140px;
+    background-image: url("../images/profile.png");
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.username {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.company {
+    font-size: 18px;
+    margin-top: 5px;
+}

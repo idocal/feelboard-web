@@ -1,0 +1,75 @@
+.background {
+    background: url("../images/background.png") bottom center;
+    background-size: cover;
+}
+
+.logo-space {
+    margin-top: 150px;
+    width: 100%;
+    text-align: center;
+}
+
+.logo {
+    width: 215px;
+    height: 45px;
+    display: block;
+    margin: 0 auto;
+    background: url("../images/logo@2x.png");
+    background-size: cover;
+}
+
+.slogan {
+    font-size: 24px;
+    color: #fff;
+    margin-top: 15px;
+    line-height: 24px;
+    justify-content: center;
+}
+
+.demo-button {
+    justify-content: center;
+}
+
+.demo-button button {
+    color: #ffffff;
+    border-radius: 4px;
+    background-color: #00C5D2;
+    padding: 16px 32px;
+    font-size: 18px;
+    display: block;
+    margin-top: 80px;
+    border: 0;
+    outline: 0;
+    transition: all 0.2s;
+    font-weight: 700;
+}
+
+.demo-button button:hover {
+    cursor: pointer;
+    background: #12DCE9;
+}
+
+@media only screen and (min-width: 980px) {
+    .logo-space {
+        text-align: left;
+        margin-left: 100px;
+    }
+    .logo {
+        width: 430px;
+        height: 90px;
+        margin: 0;
+    }
+    .slogan {
+        font-size: 32px;
+        line-height: 32px;
+        justify-content: left;
+    }
+
+    .demo-button {
+        justify-content: left;
+    }
+
+    .demo-button button {
+        margin-top: 60px;
+    }
+}

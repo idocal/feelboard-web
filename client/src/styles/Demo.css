@@ -1,0 +1,16 @@
+.demo {
+    width: 100%;
+}
+
+.predictions {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.age, .gender {
+    display: inline-block;
+    background: red;
+    color: white;
+    padding: 4px;
+}

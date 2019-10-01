@@ -1,0 +1,30 @@
+.videoset-add, .videoset .thumb {
+    width: 240px;
+    height: 120px;
+    margin-right: 25px;
+    border-radius: 4px;
+}
+
+.videoset .thumb {
+    background-image: url("../images/corona@2x.png");
+    background-size: cover;
+}
+
+.videoset .title {
+    margin-top: 10px;
+}
+
+.videoset-add {
+    border: 1px dashed;
+    cursor: pointer;
+}
+
+.videoset-add:hover {
+    background-color: #f0f3f7;
+    transition: all 0.5s;
+}
+
+.videoset-add img {
+    width: 24px;
+    height: 17px;
+}
