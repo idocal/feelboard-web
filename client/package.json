@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@tensorflow/tfjs-node": "^1.2.9",
     "canvas": "^2.6.0",
     "eslint-utils": "^1.4.1",
     "face-api.js": "^0.20.1",
