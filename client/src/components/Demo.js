@@ -11,8 +11,8 @@ let WIDTH = 640;
 let HEIGHT = 480;
 const TIMEOUT = 15;
 const SIMILAR_THRESHOLD = 0.46;
-const AGE_ALPHA = 0.9;
-const MIN_PREDICTIONS = 10;
+const AGE_ALPHA = 0.8;
+const MIN_PREDICTIONS = 3;
 
 class Demo extends Component {
 
@@ -24,13 +24,13 @@ class Demo extends Component {
             loading: true,
             fullDesc: null,
             facingMode: null,
-            descriptors: null,
             pastDescriptors: [],
-            predictions: null,
+            predictions: [],
             finalPredictions: []
         };
         this.updatePrediction = this.updatePrediction.bind(this);
         this.getFinalPredictions = this.getFinalPredictions.bind(this);
+        this.startSession = this.startSession.bind(this);
     }
 
     async componentWillMount() {
@@ -44,13 +44,7 @@ class Demo extends Component {
     }
 
     componentDidMount() {
-        setTimeout(async () => {
-            await this.setState({
-                timeout: true,
-                finalPredictions: this.getFinalPredictions()
-            });
-        }, TIMEOUT * 1000);
-        this.startCapture();
+        this.startSession();
     }
 
     async getUserCameraSize() {
@@ -66,9 +60,24 @@ class Demo extends Component {
             } else {
                 clearInterval(this.interval);
             }
-
         }, 300);
     };
+
+    startSession() {
+        this.setState({
+            timeout: false,
+            pastDescriptors: [],
+            predictions: [],
+            finalPredictions: []
+        });
+        setTimeout(async () => {
+            await this.setState({
+                timeout: true,
+                finalPredictions: this.getFinalPredictions()
+            });
+        }, TIMEOUT * 1000);
+        this.startCapture();
+    }
 
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -211,11 +220,17 @@ class Demo extends Component {
                     {
                         this.state.finalPredictions.map((pred, i) => (
                             <FlexView key={i}>
-                                Age: {pred.age} Gender: {pred.gender}
+                                Age: {Math.floor(pred.age)} Gender: {pred.gender}
                             </FlexView>
                         ))
                     }
                 </FlexView>
+
+                <FlexView>
+                    <button onClick={() => {this.startSession()}}>Try again</button>
+                </FlexView>
+
+
             </FlexView>;
 
         return (

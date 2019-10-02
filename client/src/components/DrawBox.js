@@ -8,8 +8,6 @@ export default class DrawBox extends Component {
             ages: null,
             genders: null,
             descriptors: null,
-            pastDescriptors: [],
-            predictions: null
         };
     }
 
