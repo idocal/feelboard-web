@@ -1,11 +1,10 @@
-import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
-
 
 export async function loadModels() {
     const MODEL_URL = process.env.PUBLIC_URL + '/models';
     await faceapi.loadTinyFaceDetectorModel(MODEL_URL);
     await faceapi.loadFaceLandmarkTinyModel(MODEL_URL);
+    await faceapi.loadFaceRecognitionModel(MODEL_URL);
     await faceapi.loadAgeGenderModel(MODEL_URL);
 }
 
@@ -25,10 +24,15 @@ export async function getFullFaceDescription(blob, inputSize = 512) {
         // including landmark and descriptor of each face
         return await faceapi.detectAllFaces(img, OPTION)
             .withFaceLandmarks(true)
-            .withAgeAndGender();
+            .withAgeAndGender()
+            .withFaceDescriptors();
     }
 }
 
 export function isFaceDetectionModelLoaded() {
     return !!faceapi.nets.tinyFaceDetector.params;
+}
+
+export function distance(a ,b) {
+    return faceapi.euclideanDistance(a ,b);
 }

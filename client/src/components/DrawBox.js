@@ -6,7 +6,10 @@ export default class DrawBox extends Component {
         this.state = {
             detections: null,
             ages: null,
-            genders: null
+            genders: null,
+            descriptors: null,
+            pastDescriptors: [],
+            predictions: null
         };
     }
 
@@ -20,12 +23,12 @@ export default class DrawBox extends Component {
 
     getDescription = async (props = this.props) => {
         const { fullDesc } = props;
-
         if (!!fullDesc) {
             await this.setState({
                 detections: fullDesc.map( desc => { return desc.detection } ),
                 ages: fullDesc.map( desc => { return desc.age } ),
-                genders: fullDesc.map( desc => { return desc.gender } )
+                genders: fullDesc.map( desc => { return desc.gender } ),
+                descriptors: fullDesc.map( desc => { return desc.descriptor } )
             });
         }
     };
