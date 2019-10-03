@@ -38,9 +38,7 @@ class Demo extends Component {
         let cameraSize = await this.getUserCameraSize();
         WIDTH = cameraSize.width;
         HEIGHT = cameraSize.height;
-        await this.setState({
-            loading: false
-        });
+        this.setState({loading: false});
     }
 
     componentDidMount() {
@@ -64,19 +62,28 @@ class Demo extends Component {
     };
 
     startSession() {
+        // init session
         this.setState({
             timeout: false,
+            fullDesc: null,
             pastDescriptors: [],
             predictions: [],
             finalPredictions: []
         });
-        setTimeout(async () => {
-            await this.setState({
-                timeout: true,
-                finalPredictions: this.getFinalPredictions()
-            });
-        }, TIMEOUT * 1000);
-        this.startCapture();
+
+        // check for camera input
+        this.cameraCheckInterval = setInterval(() => {
+            if (!!this.webcam.current && !!this.webcam.current.getScreenshot()) {
+                setTimeout(async () => {
+                    await this.setState({
+                        timeout: true,
+                        finalPredictions: this.getFinalPredictions()
+                    });
+                }, TIMEOUT * 1000);
+                this.startCapture();
+                clearInterval(this.cameraCheckInterval);
+            }
+        }, 100);
     }
 
     componentWillUnmount() {
@@ -194,7 +201,6 @@ class Demo extends Component {
                         audio={false}
                         width={WIDTH}
                         height={HEIGHT}
-
                         ref={this.webcam}
                         screenshotFormat="image/jpeg"
                         videoConstraints={videoConstraints}
