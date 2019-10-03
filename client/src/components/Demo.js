@@ -9,7 +9,7 @@ import '../styles/Demo.css';
 
 let WIDTH = 640;
 let HEIGHT = 480;
-const TIMEOUT = 15;
+const TIMEOUT = 10;
 const SIMILAR_THRESHOLD = 0.46;
 const AGE_ALPHA = 0.8;
 const MIN_PREDICTIONS = 3;
@@ -21,6 +21,7 @@ class Demo extends Component {
         this.webcam = React.createRef();
         this.state = {
             timeout: false,
+            startedTimeoutCounter: false,
             loading: true,
             fullDesc: null,
             facingMode: null,
@@ -65,6 +66,7 @@ class Demo extends Component {
         // init session
         this.setState({
             timeout: false,
+            startedTimeoutCounter: false,
             fullDesc: null,
             pastDescriptors: [],
             predictions: [],
@@ -74,12 +76,6 @@ class Demo extends Component {
         // check for camera input
         this.cameraCheckInterval = setInterval(() => {
             if (!!this.webcam.current && !!this.webcam.current.getScreenshot()) {
-                setTimeout(async () => {
-                    await this.setState({
-                        timeout: true,
-                        finalPredictions: this.getFinalPredictions()
-                    });
-                }, TIMEOUT * 1000);
                 this.startCapture();
                 clearInterval(this.cameraCheckInterval);
             }
@@ -91,35 +87,44 @@ class Demo extends Component {
     }
 
     async capture() {
-        if (!!this.webcam.current) {
-            await getFullFaceDescription(
-                this.webcam.current.getScreenshot()
-            ).then(async fullDesc => {
-                this.setState({ fullDesc });
+        await getFullFaceDescription(
+            this.webcam.current.getScreenshot()
+        ).then(async fullDesc => {
+            this.setState({ fullDesc });
 
-                // assign first prediction
-                if (!!fullDesc && !this.state.pastDescriptors.length) {
+            // init timeout if not initiated
+            if (!this.state.startedTimeoutCounter && fullDesc.length) {
+                setTimeout(async () => {
                     await this.setState({
-                        pastDescriptors: fullDesc.map( desc => { return desc.descriptor } ),
-                        predictions: fullDesc.map( desc => {
-                            return {
-                                age: desc.age,
-                                malePredictions: desc.gender === "male" ? 1 : 0,
-                                femalePredictions: desc.gender === "female" ? 1 : 0,
-                                updates: 1
-                            };
-                        })
+                        timeout: true,
+                        finalPredictions: this.getFinalPredictions()
                     });
-                }
+                }, TIMEOUT * 1000);
+                this.setState({ startedTimeoutCounter: true });
+            }
 
-                // update prediction for each descriptor
-                if (!!fullDesc) {
-                    for (const desc of fullDesc) {
-                        await this.updatePrediction(desc);
-                    }
+            // assign first prediction
+            if (!!fullDesc && !this.state.pastDescriptors.length) {
+                await this.setState({
+                    pastDescriptors: fullDesc.map( desc => { return desc.descriptor } ),
+                    predictions: fullDesc.map( desc => {
+                        return {
+                            age: desc.age,
+                            malePredictions: desc.gender === "male" ? 1 : 0,
+                            femalePredictions: desc.gender === "female" ? 1 : 0,
+                            updates: 1
+                        };
+                    })
+                });
+            }
+
+            // update prediction for each descriptor
+            if (!!fullDesc) {
+                for (const desc of fullDesc) {
+                    await this.updatePrediction(desc);
                 }
-            });
-        }
+            }
+        });
     };
 
     getFinalPredictions() {
