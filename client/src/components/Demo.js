@@ -9,7 +9,8 @@ import '../styles/Demo.css';
 
 let WIDTH = 640;
 let HEIGHT = 480;
-const TIMEOUT = 10;
+let RATIO = WIDTH / HEIGHT;
+const TIMEOUT = 15;
 const SIMILAR_THRESHOLD = 0.46;
 const AGE_ALPHA = 0.8;
 const MIN_PREDICTIONS = 3;
@@ -37,8 +38,14 @@ class Demo extends Component {
     async componentWillMount() {
         await loadModels();
         let cameraSize = await this.getUserCameraSize();
+        let windowWidth = window.innerWidth;
         WIDTH = cameraSize.width;
         HEIGHT = cameraSize.height;
+        RATIO = WIDTH / HEIGHT;
+        if (windowWidth < WIDTH) {
+            WIDTH = windowWidth;
+            HEIGHT = WIDTH / RATIO;
+        }
         this.setState({loading: false});
     }
 
@@ -47,7 +54,13 @@ class Demo extends Component {
     }
 
     async getUserCameraSize() {
-        let stream = await navigator.mediaDevices.getUserMedia({video: true});
+        let stream;
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({video: true});
+        } catch(e) { // No camera access
+            alert('This demo requires camera access');
+        }
+
         let {width, height} = stream.getTracks()[0].getSettings();
         return {width, height}
     }
@@ -96,6 +109,7 @@ class Demo extends Component {
             if (!this.state.startedTimeoutCounter && fullDesc.length) {
                 setTimeout(async () => {
                     await this.setState({
+                        startedTimeoutCounter: true,
                         timeout: true,
                         finalPredictions: this.getFinalPredictions()
                     });
@@ -201,38 +215,65 @@ class Demo extends Component {
 
         let webcamWithPredictions =
                 <FlexView>
-                    <Webcam
-                        className="webcam"
-                        audio={false}
-                        width={WIDTH}
-                        height={HEIGHT}
-                        ref={this.webcam}
-                        screenshotFormat="image/jpeg"
-                        videoConstraints={videoConstraints}
-                        style={{position: "absolute", top: 0, left: 0}}
-                    />
+                    <div className='fullscreen'>
+                        <FlexView column hAlignContent="center" vAlignContent="top" width="100%" height="100%" style={{background: 'black'}}>
+                            <Webcam
+                                className="webcam"
+                                audio={false}
+                                width={WIDTH}
+                                height={HEIGHT}
+                                ref={this.webcam}
+                                screenshotFormat="image/jpeg"
+                                videoConstraints={videoConstraints}
+                            />
+                            <div className="gradient" style={{width: WIDTH, height: HEIGHT}} />
+                            <div className="detecting">Detecting...</div>
+                        </FlexView>
+                    </div>
+
 
                     {!!fullDesc ? (
-                        <DrawBox
-                            fullDesc={fullDesc}
-                            imageWidth={WIDTH}
-                            boxColor={'blue'}
-                        />
+                        <div className="fullscreen">
+                            <FlexView hAlignContent="center" vAlignContent="top" width="100%" height="100%">
+                                <FlexView width={WIDTH} height={HEIGHT} >
+                                    <DrawBox
+                                        fullDesc={fullDesc}
+                                        imageWidth={WIDTH}
+                                        boxColor={'blue'}
+                                    />
+                                </FlexView>
+                            </FlexView>
+                        </div>
+
                     ) : null}
                 </FlexView>;
 
         let predictions =
-            <FlexView column>
-                <FlexView>
-                    Total number of people: { this.state.finalPredictions.length }
+            <FlexView column
+                      className="predictions"
+                      width="100%"
+                      height="100%"
+                      vAlignContent="center"
+                      hAlignContent="center">
+                <FlexView hAlignContent="center">
+                    {
+                        !this.state.finalPredictions.length ?
+                            <h2>Feelboard did not detect any person</h2> :
+                            <h2>Feelboard detected { this.state.finalPredictions.length === 1 ? "1 person!" :
+                                this.state.finalPredictions.length + " persons!" }</h2>
+                    }
                 </FlexView>
 
                 <FlexView>
                     {
                         this.state.finalPredictions.map((pred, i) => (
-                            <FlexView key={i}>
-                                Age: {Math.floor(pred.age)} Gender: {pred.gender}
-                            </FlexView>
+                                <FlexView column key={i} className="icon" hAlignContent="center">
+                                    <div className={pred.gender === "male" ? "icon-img male" : "icon-img female"} />
+                                    <div className="info">
+                                        { pred.gender === "male" ? "Male, " : "Female, " }
+                                        { Math.round(pred.age) }
+                                    </div>
+                                </FlexView>
                         ))
                     }
                 </FlexView>

@@ -4,13 +4,89 @@
 
 .predictions {
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: 0;
 }
+
+.fullscreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.gradient {
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 30%);
+    position: absolute;
+}
+
 
 .age, .gender {
     display: inline-block;
     background: red;
     color: white;
     padding: 4px;
+}
+
+.detecting {
+    color: white;
+    font-size: 20px;
+    animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.predictions {
+    padding: 10px;
+}
+.predictions h2 {
+    font-size: 22px;
+    text-align: center;
+}
+
+.predictions button {
+    color: #ffffff;
+    border-radius: 4px;
+    background-color: #00C5D2;
+    padding: 16px 32px;
+    font-size: 18px;
+    display: block;
+    margin-top: 20px;
+    border: 0;
+    outline: 0;
+    transition: all 0.2s;
+    font-weight: 700;
+}
+
+.predictions button:hover {
+    cursor: pointer;
+    background: #12DCE9;
+}
+
+.icon {
+    margin: 30px 15px;
+}
+
+.icon-img {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    background-size: cover;
+}
+
+.icon-img.female {
+    background-image: url('../images/female.png');
+}
+
+.icon-img.male {
+    background-image: url('../images/male.png');
+}
+
+.icon .info {
+    margin-top: 10px;
 }

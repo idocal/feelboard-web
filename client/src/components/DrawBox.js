@@ -51,9 +51,6 @@ export default class DrawBox extends Component {
                     <div key={i}>
                         <div
                             style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
                                 border: 'solid',
                                 borderColor: boxColor,
                                 height: _H,
