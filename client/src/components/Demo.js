@@ -126,6 +126,8 @@ class Demo extends Component {
                             age: desc.age,
                             malePredictions: desc.gender === "male" ? 1 : 0,
                             femalePredictions: desc.gender === "female" ? 1 : 0,
+                            minAge: desc.age,
+                            maxAge: desc.age,
                             updates: 1
                         };
                     })
@@ -146,7 +148,9 @@ class Demo extends Component {
         return predictions.map(pred => {
             return {
                 age: pred.age,
-                gender: pred.malePredictions >= pred.femalePredictions ? "male" : "female"
+                gender: pred.malePredictions >= pred.femalePredictions ? "male" : "female",
+                minAge: pred.minAge,
+                maxAge: pred.maxAge
             }
         });
     }
@@ -175,11 +179,15 @@ class Demo extends Component {
                 await this.setState(prevState => {
                     let predictions = prevState.predictions;
                     let updatedPrediction = prevState.predictions[candidate];
+                    let minAge = age < updatedPrediction.minAge ? age : updatedPrediction.minAge;
+                    let maxAge = age > updatedPrediction.maxAge ? age : updatedPrediction.maxAge;
 
                     predictions[candidate] = {
                         age: AGE_ALPHA * updatedPrediction.age + (1 - AGE_ALPHA) * age,
                         malePredictions: gender === "male" ? updatedPrediction.malePredictions + 1 : updatedPrediction.malePredictions,
                         femalePredictions: gender === "female" ? updatedPrediction.femalePredictions + 1 : updatedPrediction.femalePredictions,
+                        minAge,
+                        maxAge,
                         updates: updatedPrediction.updates + 1
                     };
 
@@ -193,6 +201,8 @@ class Demo extends Component {
                         age,
                         malePredictions: gender === "male" ? 1 : 0,
                         femalePredictions: gender === "female" ? 1 : 0,
+                        minAge: age,
+                        maxAge: age,
                         updates: 1,
                     };
                     predictions.push(prediction);
@@ -271,17 +281,18 @@ class Demo extends Component {
                         this.state.finalPredictions.map((pred, i) => (
                             <FlexView column key={i} className="icon" hAlignContent="center">
                                 <div className={pred.gender === "male" ? "icon-img male" : "icon-img female"} />
-                                <div className="info">
-                                    { pred.gender === "male" ? "Male, " : "Female, " }
-                                    { Math.round(pred.age) }
-                                </div>
+                                <FlexView className="info" column hAlignContent="center">
+                                    <FlexView className="final-prediction">
+                                        { pred.gender === "male" ? "Male, " : "Female, " }
+                                        { Math.round(pred.age) }
+                                    </FlexView>
+                                    <FlexView>
+                                        ({ Math.round(pred.minAge) } - { Math.round(pred.maxAge) })
+                                    </FlexView>
+                                </FlexView>
                             </FlexView>
                         ))
                     }
-                </FlexView>
-
-                <FlexView>
-                    { console.log(this.state.predictions) }
                 </FlexView>
 
                 <FlexView>
