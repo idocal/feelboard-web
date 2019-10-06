@@ -2,7 +2,6 @@ import React from 'react';
 import FlexView from 'react-flexview';
 import '../styles/CameraError.css'
 import {Link} from "react-router-dom";
-import Camera from '../images/camera.png';
 
 export default function CameraError() {
     return (
