@@ -69,7 +69,8 @@
 }
 
 .icon {
-    margin: 30px 15px;
+    margin: 30px 15px 15px 15px;
+    min-width: 128px !important;
 }
 
 .icon-img {

@@ -266,16 +266,16 @@ class Demo extends Component {
                     }
                 </FlexView>
 
-                <FlexView>
+                <FlexView wrap width={WIDTH} hAlignContent="center">
                     {
                         this.state.finalPredictions.map((pred, i) => (
-                                <FlexView column key={i} className="icon" hAlignContent="center">
-                                    <div className={pred.gender === "male" ? "icon-img male" : "icon-img female"} />
-                                    <div className="info">
-                                        { pred.gender === "male" ? "Male, " : "Female, " }
-                                        { Math.round(pred.age) }
-                                    </div>
-                                </FlexView>
+                            <FlexView column key={i} className="icon" hAlignContent="center">
+                                <div className={pred.gender === "male" ? "icon-img male" : "icon-img female"} />
+                                <div className="info">
+                                    { pred.gender === "male" ? "Male, " : "Female, " }
+                                    { Math.round(pred.age) }
+                                </div>
+                            </FlexView>
                         ))
                     }
                 </FlexView>
