@@ -188,6 +188,7 @@ class Demo extends Component {
             } else {
                 await this.setState(prevState => {
                     let predictions = prevState.predictions;
+                    let pastDescriptors = prevState.pastDescriptors;
                     let prediction = {
                         age,
                         malePredictions: gender === "male" ? 1 : 0,
@@ -195,7 +196,8 @@ class Demo extends Component {
                         updates: 1,
                     };
                     predictions.push(prediction);
-                    return { predictions }
+                    pastDescriptors.push(descriptor);
+                    return { predictions, pastDescriptors }
                 });
             }
         }
@@ -276,6 +278,10 @@ class Demo extends Component {
                                 </FlexView>
                         ))
                     }
+                </FlexView>
+
+                <FlexView>
+                    { console.log(this.state.predictions) }
                 </FlexView>
 
                 <FlexView>

@@ -51,6 +51,7 @@ export default class DrawBox extends Component {
                     <div key={i}>
                         <div
                             style={{
+                                position: 'absolute',
                                 border: 'solid',
                                 borderColor: boxColor,
                                 height: _H,
@@ -58,7 +59,7 @@ export default class DrawBox extends Component {
                                 transform: `translate(${_X}px,${_Y}px)`
                             }}
                         >
-                            <div className="predictions">
+                            <div className="detect-predictions">
                                 <div className="gender">{ this.state.genders[i]}</div>
                                 <div className="age">{ Math.floor(this.state.ages[i]) }</div>
                             </div>

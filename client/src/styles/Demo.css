@@ -2,7 +2,7 @@
     width: 100%;
 }
 
-.predictions {
+.detect-predictions {
     position: absolute;
     left: 0;
     bottom: 0;
