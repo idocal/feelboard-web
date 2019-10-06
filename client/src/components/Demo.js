@@ -13,7 +13,7 @@ let RATIO = WIDTH / HEIGHT;
 const TIMEOUT = 15;
 const SIMILAR_THRESHOLD = 0.46;
 const AGE_ALPHA = 0.8;
-const MIN_PREDICTIONS = 3;
+const MIN_PREDICTIONS = 7;
 
 class Demo extends Component {
 
@@ -58,7 +58,8 @@ class Demo extends Component {
         try {
             stream = await navigator.mediaDevices.getUserMedia({video: true});
         } catch(e) { // No camera access
-            alert('This demo requires camera access');
+            this.props.history.push('/no-camera-access');
+            return {width: 0, height: 0}
         }
 
         let {width, height} = stream.getTracks()[0].getSettings();

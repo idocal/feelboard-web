@@ -1,0 +1,51 @@
+.camera-error {
+     padding: 15px;
+}
+
+.camera-error h1 {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.camera-error h2 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 10px 0;
+}
+
+.camera-error h3 {
+    font-size: 18px;
+    font-weight: 200;
+    margin: 30px 0 0 0;
+}
+
+.camera-error h1, .camera-error h2, .camera-error h3 {
+    text-align: center;
+}
+
+.camera-error button {
+    color: #ffffff;
+    border-radius: 4px;
+    background-color: #00C5D2;
+    padding: 16px 32px;
+    font-size: 18px;
+    display: block;
+    margin-top: 20px;
+    border: 0;
+    outline: 0;
+    transition: all 0.2s;
+    font-weight: 700;
+}
+
+.camera-error button:hover {
+    cursor: pointer;
+    background: #12DCE9;
+}
+
+.camera-error .camera {
+    width: 150px;
+    height: 115px;
+    background-image: url('../images/camera.png');
+    background-size: cover;
+    margin-bottom: 50px;
+}
